@@ -12,3 +12,94 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id             String   @id @default(uuid())
+  username       String
+  profilePicture String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Model {
+  id             String              @id @default(uuid())
+  name           String
+  type           ModelTypeEnum
+  age            Int
+  ethinicity     ModelEthinicityEnum
+  eyeColor       ModelEyeColorEnum
+  bald           Boolean
+  triggerWord    String?
+  tensorPath     String?
+  trainingstatus ModelTrainingStatus @default(Pending)
+  outputImages   OutputImages[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  userId         String
+  falAiRequestId String?
+  zipUrl         String
+}
+
+
+model OutputImages {
+  id        String                @id @default(uuid())
+  imageUrl  String
+  modelId   String
+  userId    String
+  prompt    String
+  status    ImageGenerationStatus @default(Pending)
+  model     Model                 @relation(fields: [modelId], references: [id])
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+  falAiRequestId String?
+}
+
+model Pack {
+  id      String        @id @default(uuid())
+  name    String
+  prompts PackPrompts[]
+}
+
+model PackPrompts {
+  id     String @id @default(uuid())
+  prompt String
+  packId String
+  pack   Pack   @relation(fields: [packId], references: [id])
+}
+
+enum ImageGenerationStatus {
+  Generated
+  Pending
+  Failed
+}
+
+enum ModelTrainingStatus {
+  Completed
+  Pending
+  Failed
+}
+
+enum ModelTypeEnum {
+  Man
+  Woman
+  Other
+}
+
+enum ModelEthinicityEnum {
+  Black
+  White
+  South_Asian
+  Asian_American
+  South_East_Asian
+  Hispanic
+  Middle_Eastern
+  Pacific
+  East_Asian
+}
+
+enum ModelEyeColorEnum {
+  Brown
+  Blue
+  Hazel
+  Grey
+}
