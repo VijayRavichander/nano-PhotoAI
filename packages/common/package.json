@@ -3,7 +3,8 @@
   "module": "index.ts",
   "type": "module",
   "exports": {
-    "./types": "./types.ts"
+    "./types": "./types.ts", 
+    "./inferred": "./inferred-types.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
