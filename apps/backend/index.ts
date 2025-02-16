@@ -7,7 +7,6 @@ import cors from "cors"
 import { authMiddleware } from './middleware';
 
 const app = express();
-// const USER_ID = "111"
 
 const falAIClient = new FalAiModel();
 
@@ -153,6 +152,18 @@ app.post("/pack/generate", authMiddleware, async (req, res) => {
         images: images.map((image) => image.id)
     })
 
+})
+
+app.get("/models", authMiddleware, async (req, res) => {
+
+    const models = await prismaClient.model.findMany({
+        where: {
+            // OR: [{userId: req.userId}, {open: true}]
+            userId: req.userId
+        }
+    })
+
+    res.status(200).json({models})
 })
 
 app.get("/pack/bulk", async (req, res) => {

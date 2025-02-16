@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs"
+import { ClerkProvider } from "@clerk/nextjs";
 import AppBar from "@/components/ui/appBar";
-
-
+import { Providers } from "@/components/providers/provider";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -25,15 +24,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <ClerkProvider>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div>
-          <AppBar />
-        </div>
-        {children}
-      </body>
-      </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            <Providers>
+              <div>
+                <div>
+                  <AppBar />
+                </div>
+                <div>
+                {children}
+                </div>
+              </div>
+            </Providers>
+        </body>
     </html>
   );
 }
