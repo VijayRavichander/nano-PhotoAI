@@ -5,16 +5,33 @@ import { Sparkles } from "lucide-react"
 import { Button } from "./ui/button"
 import { useState } from "react"
 import { SelectModel } from "./SelectModel"
+import { BACKEND_URL } from "@/config"
+import axios from "axios"
+import { useAuth } from "@clerk/nextjs"
+
 export default function Generate() {
 
     const [prompt, setPrompt] = useState<string>("");
     const [selectedModel, setSelectedModel] = useState<string>("");
 
+    const {getToken} = useAuth();
 
     const generateImage = async () => {
-        return;
-    }
+        console.log(prompt)
+        console.log(selectedModel)
+        console.log("HEYYYL")
+        const token = await getToken();
+        
+        console.log(token);
 
+        const res = await axios.post(`${BACKEND_URL}/ai/generate`, {prompt, modelId: selectedModel}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        console.log(res);
+    }
 
     return <div>
         <div>

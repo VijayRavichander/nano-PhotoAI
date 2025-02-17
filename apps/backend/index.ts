@@ -36,7 +36,8 @@ app.get("/presigned-url", async (req, res) => {
         type: "application/zip"
     })
 
-    res.json({
+    // console.log(key, url)
+    res.status(200).json({
         key,
         url
     })
@@ -77,6 +78,7 @@ app.post("/ai/training", authMiddleware,  async (req, res) => {
 
 app.post("/ai/generate", authMiddleware, async (req, res) => {
     
+    console.log("AI Generate")
     const parsedData = GenerateImage.safeParse(req.body);
 
     if(!parsedData.success){
@@ -158,8 +160,7 @@ app.get("/models", authMiddleware, async (req, res) => {
 
     const models = await prismaClient.model.findMany({
         where: {
-            // OR: [{userId: req.userId}, {open: true}]
-            userId: req.userId
+            OR: [{userId: req.userId}, {open: true}]
         }
     })
 
@@ -176,6 +177,7 @@ app.get("/pack/bulk", async (req, res) => {
 })
 
 app.get("/image/bulk", authMiddleware, async (req, res) => {
+
     const ids = req.query.images as string[];
     const limit = req.query.limit as string ?? "10";
     const offset = req.query.offset as string ?? "0";
@@ -183,8 +185,14 @@ app.get("/image/bulk", authMiddleware, async (req, res) => {
     const imagesData = await prismaClient.outputImages.findMany({
         where: {
             id: { in: ids },
-            userId: req.userId! 
+            userId: req.userId!,
+            status: {
+                not: "Failed"
+            }
         }, 
+        orderBy: {
+            createdAt: "desc"
+        },
         skip: parseInt(offset), 
         take: parseInt(limit)
     })
@@ -194,7 +202,7 @@ app.get("/image/bulk", authMiddleware, async (req, res) => {
     })
 })
 
-app.post("/fal-ai/training", async (req, res) => {
+app.post("/fal-ai/webhook/training", async (req, res) => {
 
     const request_id = req.body.request_id;
 
@@ -213,9 +221,14 @@ app.post("/fal-ai/training", async (req, res) => {
     })
 })
 
-app.post("/fal-ai/inference", async (req, res) => {
+app.post("/fal-ai/webhook/inference", async (req, res) => {
+
+    console.log("WebHook Inference")
+    console.log(req.body)
+    console.log(req.body.payload);
 
     const request_id = req.body.request_id;
+
 
     await prismaClient.outputImages.updateMany({
         where: {

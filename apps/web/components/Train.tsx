@@ -39,7 +39,7 @@ export default function Train() {
   const [eyeColor, setEyeColor] = useState("")
   const [bald, setBald] = useState(false)
   const [userId, setUserId] = useState("111")
-
+  const [setUpload, setSetUpload] = useState(false)
   const router = useRouter();
 
   const trainModel = async () => {
@@ -152,14 +152,21 @@ export default function Train() {
                 </div>
 
                 <div className="">
-                  <CloudUpload onUploadDone={(zipUrl) => {
+                  <CloudUpload 
+                  onUploadDone={(zipUrl) => {
                     setZipUrl(zipUrl)
-                  }}/>
+                  }}
+                  setUpload = {setUpload}
+                  setSetUpload = {setSetUpload}
+                  />
                 </div>
               </div>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button variant="outline" onClick={() => router.push("/")}>Cancel</Button>
+            <Button variant="outline" onClick={() => {
+                setSetUpload(false)
+                setZipUrl("")
+            }}>Cancel</Button>
             <Button disabled = {!zipUrl || !type || !ethinicity || !age || !eyeColor} onClick = {trainModel}>Deploy</Button>
           </CardFooter>
         </Card>

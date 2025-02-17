@@ -1,4 +1,6 @@
+import { Gallery } from "@/components/Gallery";
 import Generate from "@/components/Generate";
+import Pack from "@/components/Packs";
 import Train from "@/components/Train";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,31 +18,105 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function Page() {
   return (
     <div className="mx-10 px-4 py-24 min-h-screen">
-      <Tabs defaultValue="account" className="w-full">
+      <Tabs defaultValue="gallery" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-4 rounded-lg p-2 bg-muted/20">
           <TabsTrigger
             value="gallery"
             className="data-[state=active]:bg-blue-200 data-[state=active]:text-primary-foreground"
           >
-            Gallery
+            <span className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                <circle cx="12" cy="13" r="3" />
+              </svg>
+              <span className="hidden sm:inline">Gallery</span>
+            </span>
           </TabsTrigger>
           <TabsTrigger
             value="generate"
             className="data-[state=active]:bg-blue-200 data-[state=active]:text-primary-foreground"
           >
-            Generate
+            <span className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 3v3" />
+                <path d="M18.5 5.5 16 8" />
+                <path d="M21 12h-3" />
+                <path d="M18.5 18.5 16 16" />
+                <path d="M12 21v-3" />
+                <path d="M5.5 18.5 8 16" />
+                <path d="M3 12h3" />
+                <path d="M5.5 5.5 8 8" />
+              </svg>
+              <span className="hidden sm:inline">Generate</span>
+            </span>
           </TabsTrigger>
           <TabsTrigger
             value="packs"
             className="data-[state=active]:bg-blue-200 data-[state=active]:text-primary-foreground"
           >
-            Packs
+            <span className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+              <span className="hidden sm:inline">Packs</span>
+            </span>
           </TabsTrigger>
           <TabsTrigger
             value="train"
             className="data-[state=active]:bg-blue-200 data-[state=active]:text-primary-foreground"
           >
-            Train
+            <span className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 8V4H8" />
+                <rect width="16" height="12" x="4" y="8" rx="2" />
+                <path d="M2 14h2" />
+                <path d="M20 14h2" />
+                <path d="M15 13v2" />
+                <path d="M9 13v2" />
+              </svg>
+              <span className="hidden sm:inline">Train</span>
+            </span>
           </TabsTrigger>
         </TabsList>
         <TabsContent value="gallery">
@@ -51,19 +127,9 @@ export default function Page() {
                 Make changes to your account here. Click save when you're done.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" defaultValue="Pedro Duarte" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="username">Username</Label>
-                <Input id="username" defaultValue="@peduarte" />
-              </div>
+            <CardContent>
+              <Gallery />
             </CardContent>
-            <CardFooter>
-              <Button>Save changes</Button>
-            </CardFooter>
           </Card>
         </TabsContent>
         <TabsContent value="generate">
@@ -72,31 +138,21 @@ export default function Page() {
               <CardTitle>Generate!</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-                <Generate/>
+              <Generate />
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="packs">
           <Card>
             <CardHeader>
-              <CardTitle>Password</CardTitle>
+              <CardTitle>Packs</CardTitle>
               <CardDescription>
-                Change your password here. After saving, you'll be logged out.
+                Generate a set of images using existings packs
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="current">Current password</Label>
-                <Input id="current" type="password" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="new">New password</Label>
-                <Input id="new" type="password" />
-              </div>
+              <Pack />
             </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
           </Card>
         </TabsContent>
         <TabsContent value="train">
@@ -111,7 +167,7 @@ export default function Page() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-                <Train />
+              <Train />
             </CardContent>
             <CardFooter>
               <Button>Save password</Button>

@@ -31,6 +31,7 @@ model Model {
   bald           Boolean
   triggerWord    String?
   tensorPath     String?
+  thumbnail      String?
   trainingstatus ModelTrainingStatus @default(Pending)
   outputImages   OutputImages[]
   createdAt      DateTime            @default(now())
@@ -38,27 +39,29 @@ model Model {
   userId         String
   falAiRequestId String?
   zipUrl         String
-  // open           Boolean              @default(false) For open weight models
+  open           Boolean            @default(false)
 }
 
-
 model OutputImages {
-  id        String                @id @default(uuid())
-  imageUrl  String
-  modelId   String
-  userId    String
-  prompt    String
-  status    ImageGenerationStatus @default(Pending)
-  model     Model                 @relation(fields: [modelId], references: [id])
-  createdAt DateTime              @default(now())
-  updatedAt DateTime              @updatedAt
+  id             String                @id @default(uuid())
+  imageUrl       String
+  modelId        String
+  userId         String
+  prompt         String
+  status         ImageGenerationStatus @default(Pending)
+  model          Model                 @relation(fields: [modelId], references: [id])
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
   falAiRequestId String?
 }
 
 model Pack {
-  id      String        @id @default(uuid())
-  name    String
-  prompts PackPrompts[]
+  id          String        @id @default(uuid())
+  name        String
+  description String        @default("")
+  imageUrl1   String        @default("")
+  imageUrl2   String        @default("")
+  prompts     PackPrompts[]
 }
 
 model PackPrompts {

@@ -10,11 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import Image from "next/image";
 interface TrainedModels {
   id: string;
   name: string;
   trainingstatus: "Completed" | "Pending";
+  thumbnail: string
 }
 
 export const SelectModel = ({
@@ -65,11 +66,18 @@ export const SelectModel = ({
                 .map((model) => (
                   <Card onClick = {() => {setSelectedModel(model.id)}} key = {model.id} className={`${selectedModel == model.id ? "bg-primary text-primary-foreground border-2 border-blue-700" : "bg-primary-foreground text-primary"}`}>
                     <CardHeader>
-                      <CardTitle className="text-center">
-                        {model.name}
-                      </CardTitle>
+                    <div className="relative aspect-square overflow-hidden">
+                    <Image
+                      src={model.thumbnail}
+                      alt={`${model.name}`}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
                     </CardHeader>
-                    <CardContent>{/* Model Image  */}</CardContent>
+                    <CardContent>
+                    {model.name}
+                    </CardContent>
                   </Card>
                 ))}
             </div>

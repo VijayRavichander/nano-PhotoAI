@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Pack" ADD COLUMN     "description" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "imageUrl1" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "imageUrl2" TEXT NOT NULL DEFAULT '';

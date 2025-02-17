@@ -12,57 +12,73 @@ import { BACKEND_URL, CLOUDFLARE_URL } from "@/config";
 import axios from "axios";
 import JSZip from "jszip";
 
-export function CloudUpload({onUploadDone}: {onUploadDone: (zipUrl: string) => void}) {
-  
+export function CloudUpload({
+  onUploadDone,
+  setUpload,
+  setSetUpload,
+}: {
+  onUploadDone: (zipUrl: string) => void;
+  setUpload: boolean;
+  setSetUpload: (s: boolean) => void;
+}) {
   return (
-    <Card>
+    <Card className={`${setUpload == true ? "bg-green-200" : "bg-blue-200"}`}>
+      {/* // <Card> */}
       <CardHeader>
         <CardTitle>Upload Images</CardTitle>
         <CardDescription>
-          Drag and drop your images or click the button below to select files.
+          Click the button below to select files.
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg p-7 space-y-2">
-        <CloudUploadIcon className="w-8 h-8 text-zinc-500 dark:text-zinc-400" />
-        <Button
-          variant="outline"
-          className="w-full"
-          onClick={() => {
-            const input = document.createElement("input");
-            input.type = "file";
-            input.accept = "image/*";
-            input.multiple = true;
-            input.onchange = async () => {
+      {setUpload ? (
+        <div>
+          <CardContent className="flex flex-col items-center justify-center border-2 border border-zinc-200 dark:border-zinc-800 rounded-lg p-7 space-y-2">
+            <CloudUploadIcon className="w-8 h-8 text-zinc-500 dark:text-zinc-400" />
+          </CardContent>
+        </div>
+      ) : (
+        <div>
+          <CardContent className="flex flex-col items-center justify-center dark:border-zinc-800 rounded-lg p-7 space-y-2">
+            <CloudUploadIcon className="w-8 h-8 text-zinc-500 dark:text-zinc-400" />
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                const input = document.createElement("input");
+                input.type = "file";
+                input.accept = "image/*";
+                input.multiple = true;
+                input.onchange = async () => {
+                  const zip = new JSZip();
+                  const res = await axios.get(`${BACKEND_URL}/presigned-url`);
+                  const url = res.data.url;
+                  const key = res.data.key;
 
-              const zip = new JSZip();
-              const res = await axios.get(`${BACKEND_URL}/presigned-url`);
-              const url = res.data.url;
-              const key = res.data.key;
+                  if (input.files) {
+                    for (const file of input.files) {
+                      const content = await file.arrayBuffer();
+                      zip.file(file.name, content);
+                    }
 
-              if (input.files) {
-                for (const file of input.files) {
-                  const content = await file.arrayBuffer();
-                  zip.file(file.name, content);
-                }
+                    const content = await zip.generateAsync({ type: "blob" });
+                    const formData = new FormData();
+                    formData.append("file", content);
+                    formData.append("key", key);
 
-                const content = await zip.generateAsync({type: "blob"});
-                const formData = new FormData();
-                formData.append("file", content)
-                formData.append("key", key);
-
-                const res = await axios.put(url, formData);
-                onUploadDone(`${CLOUDFLARE_URL}/${key}`)
-
-                console.log(res.data);
-              }
-
-            };
-            input.click();
-          }}
-        >
-          Select Files
-        </Button>
-      </CardContent>
+                    const res = await axios.put(url, formData);
+                    onUploadDone(`${CLOUDFLARE_URL}/${key}`);
+                    setSetUpload(true);
+                    console.log(res.data);
+                  }
+                };
+                input.click();
+              }}
+            >
+              Select Files
+            </Button>
+          </CardContent>
+        </div>
+      )}
     </Card>
   );
 }
