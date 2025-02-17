@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Page() {
   return (
-    <div className="mx-10 px-4 py-24 min-h-screen">
+    <div className="mx-10 px-4 py-12 min-h-screen">
       <Tabs defaultValue="gallery" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-4 rounded-lg p-2 bg-muted/20">
           <TabsTrigger
@@ -122,9 +122,9 @@ export default function Page() {
         <TabsContent value="gallery">
           <Card>
             <CardHeader>
-              <CardTitle>Account</CardTitle>
+              <CardTitle>Gallery</CardTitle>
               <CardDescription>
-                Make changes to your account here. Click save when you're done.
+                All your magic exist here
               </CardDescription>
             </CardHeader>
             <CardContent>

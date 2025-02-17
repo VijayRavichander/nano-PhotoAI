@@ -1,9 +1,17 @@
-"use client"
+"use client";
 import { BACKEND_URL } from "@/config";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ImageCard, ImageSkeleton } from "./ImageCard";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface Image {
   id: string;
@@ -21,6 +29,7 @@ export const Gallery = () => {
   const { getToken } = useAuth();
   const [images, setImages] = useState<Image[]>([]);
   const [imageLoading, setImageLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -45,11 +54,10 @@ export const Gallery = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Gallery</h2>{" "}
+      <div className="flex items-center justify-between my-2">
         <span>{images.length} images</span>
       </div>
-      <div>
+      <div className="my-5">
         {imageLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {[...Array(4)].map((_, i) => (
@@ -62,7 +70,7 @@ export const Gallery = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {images.map((image) => (
               <ImageCard
-                key = {image.id}
+                key={image.id}
                 id={image.id}
                 imageUrl={image.imageUrl}
                 status={image.status}
@@ -71,6 +79,23 @@ export const Gallery = () => {
           </div>
         )}
       </div>
+      {/* TODO  */}
+      {/* <Dialog
+        open={!!selectedImage}
+        onOpenChange={() => setSelectedImage(null)}
+      >
+        <DialogContent className="max-w-4xl w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <DialogHeader>
+            <DialogTitle>{selectedImage?.prompt}</DialogTitle>
+            <DialogDescription>
+              Generated on{" "}
+              {selectedImage?.createdAt
+                ? new Date(selectedImage.createdAt).toLocaleDateString()
+                : ""}
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog> */}
     </div>
   );
 };
