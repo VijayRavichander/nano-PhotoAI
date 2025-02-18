@@ -11,11 +11,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
+import { Sparkles } from "lucide-react";
 interface TrainedModels {
   id: string;
   name: string;
   trainingstatus: "Completed" | "Pending";
-  thumbnail: string
+  thumbnail: string;
 }
 
 export const SelectModel = ({
@@ -45,13 +46,8 @@ export const SelectModel = ({
     getModels();
   }, []);
 
-
-  if(modelLoading){
-    return (
-        <div>   
-            Loading..
-        </div>
-    )
+  if (modelLoading) {
+    return <div>Loading..</div>;
   }
 
   return (
@@ -64,20 +60,29 @@ export const SelectModel = ({
               {models
                 .filter((model) => model.trainingstatus === "Completed")
                 .map((model) => (
-                  <Card onClick = {() => {setSelectedModel(model.id)}} key = {model.id} className={`${selectedModel == model.id ? "bg-primary text-primary-foreground border-2 border-blue-700" : "bg-primary-foreground text-primary"}`}>
-                    <CardHeader>
-                    <div className="relative aspect-square overflow-hidden">
-                    <Image
-                      src={model.thumbnail}
-                      alt={`${model.name}`}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                    </CardHeader>
-                    <CardContent>
-                    {model.name}
-                    </CardContent>
+                  <Card
+                    onClick={() => {
+                      setSelectedModel(model.id);
+                    }}
+                    key={model.id}
+                    className={`${selectedModel == model.id ? "border-blue-200 border" : ""}`}
+                  >
+                    <div className="relative aspect-square">
+                      <Image
+                        src={model.thumbnail}
+                        alt={`Thumbnail for ${model.name}`}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105 rounded-xl"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-semibold text-white">
+                            {model.name}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
                   </Card>
                 ))}
             </div>

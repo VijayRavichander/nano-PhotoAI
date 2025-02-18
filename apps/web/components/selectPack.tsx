@@ -59,7 +59,7 @@ export const SelectPack = ({
                 setselectedPack(pack.id);
               }}
               key={pack.id}
-              className={`${selectedPack == pack.id ? "bg-primary text-primary-foreground border-2 border-blue-700" : "bg-primary-foreground text-primary"}`}
+              className={`${selectedPack == pack.id ? "border-blue-200 border p-3": ""}`}
             >
               <CardHeader className="p-0">
                 <div className="grid grid-cols-2 gap-0.5 bg-muted/20">

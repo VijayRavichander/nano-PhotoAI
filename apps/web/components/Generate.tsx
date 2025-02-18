@@ -8,13 +8,14 @@ import { SelectModel } from "./SelectModel"
 import { BACKEND_URL } from "@/config"
 import axios from "axios"
 import { useAuth } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
 
 export default function Generate() {
 
     const [prompt, setPrompt] = useState<string>("");
     const [selectedModel, setSelectedModel] = useState<string>("");
-
     const {getToken} = useAuth();
+
 
     const generateImage = async () => {
         console.log(prompt)
@@ -29,8 +30,7 @@ export default function Generate() {
                 Authorization: `Bearer ${token}`
             }
         })
-
-        console.log(res);
+        
     }
 
     return <div>
