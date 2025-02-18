@@ -1,21 +1,39 @@
+"use client"
 import { Gallery } from "@/components/Gallery";
 import Generate from "@/components/Generate";
 import Pack from "@/components/Packs";
 import Train from "@/components/Train";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
+
+  const {getToken} = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+
+    const isAuthenticated = async () => {
+
+      const token = await getToken();
+      if(!token){
+        router.push("/")
+      }
+    }
+
+    isAuthenticated()
+
+  }, [])
+
   return (
     <div className="mx-10 px-4 py-12 min-h-screen">
       <Tabs defaultValue="gallery" className="w-full">
@@ -169,9 +187,6 @@ export default function Page() {
             <CardContent className="space-y-2">
               <Train />
             </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
           </Card>
         </TabsContent>
       </Tabs>

@@ -60,7 +60,7 @@ export const Gallery = () => {
       <div className="my-5">
         {imageLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {[...Array(4)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <div key={i}>
                 <ImageSkeleton />
               </div>
@@ -76,10 +76,35 @@ export const Gallery = () => {
                 status={image.status}
               />
             ))}
+                        {images.map((image) => (
+              <ImageCard
+                key={image.id}
+                id={image.id}
+                imageUrl={image.imageUrl}
+                status={image.status}
+              />
+            ))}
+                        {images.map((image) => (
+              <ImageCard
+                key={image.id}
+                id={image.id}
+                imageUrl={image.imageUrl}
+                status={image.status}
+              />
+            ))}
+                        {images.map((image) => (
+              <ImageCard
+                key={image.id}
+                id={image.id}
+                imageUrl={image.imageUrl}
+                status={image.status}
+              />
+            ))}
+            
           </div>
         )}
       </div>
-      {/* TODO  */}
+      {/* TODO Opening an Image in Modal */}
       {/* <Dialog
         open={!!selectedImage}
         onOpenChange={() => setSelectedImage(null)}
