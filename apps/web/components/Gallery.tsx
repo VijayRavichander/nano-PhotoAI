@@ -76,7 +76,7 @@ export const Gallery = () => {
                 status={image.status}
               />
             ))}
-                        {images.map((image) => (
+            {images.map((image) => (
               <ImageCard
                 key={image.id}
                 id={image.id}
@@ -84,7 +84,7 @@ export const Gallery = () => {
                 status={image.status}
               />
             ))}
-                        {images.map((image) => (
+            {images.map((image) => (
               <ImageCard
                 key={image.id}
                 id={image.id}
@@ -92,7 +92,7 @@ export const Gallery = () => {
                 status={image.status}
               />
             ))}
-                        {images.map((image) => (
+            {images.map((image) => (
               <ImageCard
                 key={image.id}
                 id={image.id}
@@ -100,7 +100,6 @@ export const Gallery = () => {
                 status={image.status}
               />
             ))}
-            
           </div>
         )}
       </div>

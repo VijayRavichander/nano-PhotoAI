@@ -236,13 +236,27 @@ app.post("/fal-ai/webhook/inference", async (req, res) => {
 
   const request_id = req.body.request_id;
 
+  if (req.body.status === "ERROR") {
+    res.status(411).json({});
+    prismaClient.outputImages.updateMany({
+      where: {
+        falAiRequestId: request_id,
+      },
+      data: {
+        status: "Failed",
+        imageUrl: req.body.payload.images[0].url,
+      },
+    });
+    return;
+  }
+
   await prismaClient.outputImages.updateMany({
     where: {
       falAiRequestId: request_id,
     },
     data: {
       status: "Generated",
-      imageUrl: req.body.image_url,
+      imageUrl: req.body.payload.images[0].url,
     },
   });
 
