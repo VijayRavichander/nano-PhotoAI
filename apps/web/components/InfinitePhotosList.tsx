@@ -20,7 +20,7 @@ export default function InfinitePhotosList({
   const [page, setPage] = useState(0)
   const [ref, inView] = useInView()
   const [isDisable, setDisable] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const fetchImages = async (offset: number) => {
@@ -35,7 +35,7 @@ export default function InfinitePhotosList({
             }
           });
   
-          return res.data.images;
+          return res.data.images || [];
         } catch (e) {
           console.error("Fetching User Images Failed", e);
           return undefined;
@@ -43,6 +43,9 @@ export default function InfinitePhotosList({
       };
   
     async function loadMoreData() {
+        if (isLoading) return;
+
+        setIsLoading(true)
         const next = page + 1
         const offset = next * limit
         const newImages = await fetchImages(offset);
@@ -53,13 +56,15 @@ export default function InfinitePhotosList({
             ...(prev?.length ? prev : []),
             ...newImages,
           ])
+        
         } else {
           setDisable(true)
         }
+
+        setIsLoading(false)
       }
 
-
-    if (inView) {
+    if (inView && !isLoading) {
       loadMoreData()
     }
   }, [inView])
