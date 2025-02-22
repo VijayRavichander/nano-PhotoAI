@@ -1,8 +1,8 @@
 "use client"
-import { Gallery } from "@/components/Gallery";
 import Generate from "@/components/Generate";
 import Pack from "@/components/Packs";
 import Train from "@/components/Train";
+
 import {
   Card,
   CardContent,
@@ -12,8 +12,11 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Gallery from "@/components/Gallery";
+// const Gallery = dynamic(() => import('../../components/Gallery'), { ssr: false })
 
 export default function Page() {
 
@@ -29,7 +32,6 @@ export default function Page() {
         router.push("/")
       }
     }
-
     isAuthenticated()
 
   }, [])

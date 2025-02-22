@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { Image } from "./Gallery";
 import { ImageCard, ImageSkeleton } from "./ImageCard";
@@ -21,10 +22,12 @@ export default function InfinitePhotosList({
   initalData,
   limit,
   token,
+  search,
 }: {
   initalData: Image[];
   limit: number;
   token: string | null;
+  search: string | null;
 }) {
   const [images, setImages] = useState<Image[]>(initalData);
   const [page, setPage] = useState(0);
@@ -35,6 +38,17 @@ export default function InfinitePhotosList({
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   useEffect(() => {
+    console.log("Effect triggered");
+    console.log("Initial data:", initalData);
+    console.log("Current search:", search);
+    console.log("Effect triggered, initialData:", initalData);
+    setIsLoading(false);
+    setImages(initalData);
+    setDisable(false)
+    setPage(0)
+  }, [initalData, search]);
+
+  useEffect(() => {
     const fetchImages = async (offset: number) => {
       try {
         const res = await axios.get(`${BACKEND_URL}/image/bulk`, {
@@ -43,6 +57,7 @@ export default function InfinitePhotosList({
           },
           params: {
             offset: offset,
+            searchKey: search,
             limit: limit,
           },
         });
@@ -55,9 +70,6 @@ export default function InfinitePhotosList({
     };
 
     async function loadMoreData() {
-      if (isLoading) return;
-
-      setIsLoading(true);
       const next = page + 1;
       const offset = next * limit;
       const newImages = await fetchImages(offset);
@@ -71,11 +83,13 @@ export default function InfinitePhotosList({
       } else {
         setDisable(true);
       }
-
-      setIsLoading(false);
+      console.log(newImages);
     }
 
-    if (inView && !isLoading) {
+    console.log("IN View");
+    console.log(inView);
+    if (inView) {
+      console.log("Loading More Data");
       loadMoreData();
     }
   }, [inView]);
@@ -90,8 +104,8 @@ export default function InfinitePhotosList({
     try {
       const response = await fetch(imageUrl);
       const blob = await response.blob();
-      console.log(response)
-      console.log(blob)
+      console.log(response);
+      console.log(blob);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -104,6 +118,10 @@ export default function InfinitePhotosList({
       console.error("Failed to download image:", error);
     }
   };
+
+  if (isLoading) {
+    return <>Loading..</>;
+  }
 
   return (
     <>
@@ -159,16 +177,16 @@ export default function InfinitePhotosList({
                 : ""}
             </DialogDescription>
           </DialogHeader>
-          <div>
-            {/* Can add more */}
-          </div>
+          <div>{/* Can add more */}</div>
           <DialogFooter>
             <DialogClose
               onClick={() => {
                 handleDownload(selectedImage?.imageUrl!, selectedImage?.id!);
               }}
             >
-                <Button>Download <DownloadIcon /></Button>
+              <Button>
+                Download <DownloadIcon />
+              </Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>

@@ -5,6 +5,9 @@ import axios from "axios";
 import { Suspense, useEffect, useState } from "react";
 import { ImageCard, ImageSkeleton } from "./ImageCard";
 import InfinitePhotosList from "./InfinitePhotosList";
+import SearchPhoto from "./SearchPhoto";
+import { useSearchParams, usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 
 export interface Image {
   id: string;
@@ -19,11 +22,15 @@ export interface Image {
 }
 
 export const Gallery = () => {
+  const searchParams = useSearchParams();
+
+  const searchparams = searchParams.get("searchKey");
   const { getToken } = useAuth();
   const [images, setImages] = useState<Image[]>([]);
   const [imageLoading, setImageLoading] = useState(true);
   const [token, setToken] = useState<string>("");
-
+  const [search, setSearch] = useState<string>(`${searchparams || ""}`);
+  console.log("gallery mounting")
   useEffect(() => {
     const fetchImages = async () => {
       try {
@@ -36,6 +43,7 @@ export const Gallery = () => {
             params: {
               limit: 4,
               offset: 0,
+              searchKey: search || null,
             },
           });
 
@@ -50,7 +58,7 @@ export const Gallery = () => {
     };
 
     fetchImages();
-  }, []);
+  }, [search]);
 
   if (imageLoading) {
     return (
@@ -65,9 +73,19 @@ export const Gallery = () => {
   }
   return (
     <div>
-      <Suspense fallback={<p>Loading</p>}>
-        <InfinitePhotosList initalData={images} limit={4} token={token} />
+      <div className="my-4">
+        <SearchPhoto search={search} setSearch={setSearch} />
+      </div>
+      <Suspense>
+        <InfinitePhotosList
+          initalData={images}
+          limit={4}
+          token={token}
+          search={search}
+        />
       </Suspense>
     </div>
   );
 };
+
+export default Gallery;
