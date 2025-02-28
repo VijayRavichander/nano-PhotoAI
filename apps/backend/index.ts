@@ -15,8 +15,11 @@ const app = express();
 
 const falAIClient = new FalAiModel();
 
-app.use(express.json());
 app.use(cors());
+
+app.use("/payment", paymentRoutes);
+
+app.use(express.json());
 
 app.get("/health", (req, res) => {
   res.status(200).json({
@@ -292,7 +295,7 @@ app.post("/fal-ai/webhook/inference", async (req, res) => {
   });
 });
 
-app.use("/payment", paymentRoutes);
+
 
 app.listen(3005, () => {
   console.log("Backend App running on port:3005");

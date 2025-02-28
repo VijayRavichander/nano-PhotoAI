@@ -1,3 +1,4 @@
+import { prismaClient } from "db";
 import express from "express";
 import Stripe from "stripe";
 
@@ -13,19 +14,53 @@ router.post(
   async (req, res) => {
     
     const sig = req.headers["stripe-signature"];
-    console.log(sig)
+    
     try{
-        // if(!sig) throw new Error("No Signature");
+        if(!sig) throw new Error("No Signature");
 
-        // const event = stripe.webhooks.constructEvent(
-        //     req.body,
-        //     sig,
-        //     process.env.STRIPE_WEBHOOK_SECRET!
-        //   );
+        const event = await stripe.webhooks.constructEventAsync(
+            req.body,
+            sig,
+            process.env.STRIPE_WEBHOOK_SECRET!
+        );
+        
+        // // PRICE_ID
+        // console.log("Webhook Event Received:", event.type)
+        
+        if(event.type == "checkout.session.completed"){
+            const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {
+                expand: ['line_items']
+            })
+            
+            const price_id = session.line_items?.data[0]?.price?.id || null
+            const customer_email = session.customer_details?.email || null
 
-          console.log("All Good")
+            if(!customer_email || !price_id){
+                // TODO:
+                console.log("Session ID")
+                console.log(session.id)
+                res.json({received: true})
+                return
+            }
+            
+            console.log("Customer Email")
+            console.log(customer_email)
 
-          res.json({ received: true });
+            const user = await prismaClient.user.updateMany({
+                where: {
+                    email: customer_email
+                },
+                data: {
+                    credits: {
+                        increment: 1000
+                    }
+                }
+            })
+            console.log(user)
+            console.log("Payment Updated")
+        }
+        
+        res.json({ received: true });
     }catch(e){
         console.log(e)
     }
