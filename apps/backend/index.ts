@@ -9,6 +9,7 @@ import { S3Client } from "bun";
 import { FalAiModel } from "./models/FalModel";
 import cors from "cors";
 import { authMiddleware } from "./middleware";
+import paymentRoutes from "./routes/payment.routes";
 
 const app = express();
 
@@ -150,7 +151,9 @@ app.post("/pack/generate", authMiddleware, async (req, res) => {
   }
 
   let requestsIds: { request_id: string }[] = await Promise.all(
-    prompts.map((prompt) => falAIClient.generateImage(prompt.prompt, model.tensorPath!))
+    prompts.map((prompt) =>
+      falAIClient.generateImage(prompt.prompt, model.tensorPath!)
+    )
   );
 
   const images = await prismaClient.outputImages.createManyAndReturn({
@@ -187,24 +190,47 @@ app.get("/pack/bulk", async (req, res) => {
 });
 
 app.get("/image/bulk", authMiddleware, async (req, res) => {
-  const ids = req.query.images as string[];
+
   const limit = (req.query.limit as string) ?? "10";
   const offset = (req.query.offset as string) ?? "0";
+  const searchKey = (req.query.searchKey as string) ?? "";
+  let imagesData;
 
-  const imagesData = await prismaClient.outputImages.findMany({
-    where: {
-      id: { in: ids },
-      userId: req.userId!,
-      status: {
-        not: "Failed",
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    skip: parseInt(offset),
-    take: parseInt(limit),
-  });
+  if(searchKey.length == 0){
+    imagesData = await prismaClient.outputImages.findMany({
+        where: {
+          userId: req.userId!,
+          status: {
+            not: "Failed",
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: parseInt(offset),
+        take: parseInt(limit),
+      });
+  }else{
+    imagesData = await prismaClient.outputImages.findMany({
+        where: {
+          userId: req.userId!,
+          status: {
+            not: "Failed",
+          },
+          prompt: {
+            search: searchKey,
+          }
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: parseInt(offset),
+        take: parseInt(limit),
+      });
+  }
+
+  console.log(`${searchKey}`)
+  console.log(imagesData)
 
   res.json({
     images: imagesData,
@@ -228,6 +254,7 @@ app.post("/fal-ai/webhook/training", async (req, res) => {
     message: "Webhook Recieved",
   });
 });
+
 
 app.post("/fal-ai/webhook/inference", async (req, res) => {
   console.log("WebHook Inference");
@@ -264,6 +291,8 @@ app.post("/fal-ai/webhook/inference", async (req, res) => {
     message: "Webhook Recieved",
   });
 });
+
+app.use("/payment", paymentRoutes);
 
 app.listen(3005, () => {
   console.log("Backend App running on port:3005");
