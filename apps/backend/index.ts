@@ -27,6 +27,19 @@ app.get("/health", (req, res) => {
   });
 });
 
+app.get("/user", authMiddleware, async (req, res) => {
+  const user = await prismaClient.user.findFirst({
+    where: {
+      id: req.userId
+    }
+  })
+
+  res.status(200).json({
+    user
+  })
+
+})
+
 app.get("/presigned-url", async (req, res) => {
   console.log("Hitting Presigned Url");
 
@@ -84,7 +97,6 @@ app.post("/ai/training", authMiddleware, async (req, res) => {
 });
 
 app.post("/ai/generate", authMiddleware, async (req, res) => {
-  console.log("AI Generate");
   const parsedData = GenerateImage.safeParse(req.body);
 
   if (!parsedData.success) {
@@ -232,8 +244,6 @@ app.get("/image/bulk", authMiddleware, async (req, res) => {
       });
   }
 
-  console.log(`${searchKey}`)
-  console.log(imagesData)
 
   res.json({
     images: imagesData,
@@ -294,8 +304,6 @@ app.post("/fal-ai/webhook/inference", async (req, res) => {
     message: "Webhook Recieved",
   });
 });
-
-
 
 app.listen(3005, () => {
   console.log("Backend App running on port:3005");

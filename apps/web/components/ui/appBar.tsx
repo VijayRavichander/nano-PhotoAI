@@ -64,7 +64,7 @@ export default function AppBar() {
                 <div className="flex text-sm gap-2 text-center items-center">
                   <PlusCircle className="w-4 h-4" />
                   {user?.credits > 0 ? (
-                    <div>{user?.credits / 100} credits</div>
+                    <div>{(user.credits / 100).toFixed(2)} credits</div>
                   ) : (
                     <div>Get Credits</div>
                   )}

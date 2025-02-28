@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 datasource db {
@@ -19,6 +20,8 @@ model User {
   profilePicture String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  credits        Int      @default(0)
+  email          String   
 }
 
 model Model {
@@ -39,7 +42,7 @@ model Model {
   userId         String
   falAiRequestId String?
   zipUrl         String
-  open           Boolean            @default(false)
+  open           Boolean             @default(false)
 }
 
 model OutputImages {
