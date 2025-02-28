@@ -30,7 +30,8 @@ export const Gallery = () => {
   const [imageLoading, setImageLoading] = useState(true);
   const [token, setToken] = useState<string>("");
   const [search, setSearch] = useState<string>(`${searchparams || ""}`);
-  console.log("gallery mounting")
+
+  
   useEffect(() => {
     const fetchImages = async () => {
       try {
