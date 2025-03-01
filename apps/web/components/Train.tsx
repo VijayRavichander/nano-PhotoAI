@@ -26,6 +26,7 @@ import axios from "axios";
 import { BACKEND_URL } from "@/config";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 export default function Train() {
 
@@ -62,7 +63,9 @@ export default function Train() {
             Authorization: `Bearer ${token}`
         }
     });
-    router.push("/");
+    
+    // router.push("/");
+    toast("Your Model has started to train. Please check back in 10-20 mins")
   }
 
   return (

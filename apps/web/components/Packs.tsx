@@ -9,6 +9,7 @@ import { SelectPack } from "./selectPack"
 import { useAuth } from "@clerk/nextjs"
 import { BACKEND_URL } from "@/config"
 import axios from "axios"
+import { toast } from "sonner"
 export default function Pack() {
 
     const [selectedModel, setSelectedModel] = useState<string>("");
@@ -27,7 +28,8 @@ export default function Pack() {
             }
         })
 
-        console.log(res.data)
+
+        toast("Photos will be generated shortly. Please check your Gallery")
     }
 
     return <div>

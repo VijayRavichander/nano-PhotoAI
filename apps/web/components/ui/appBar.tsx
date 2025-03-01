@@ -11,6 +11,7 @@ import { FlameKindlingIcon, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL, STRIPE_PAYMENT_LINK } from "@/config";
+
 interface User {
   id: string;
   email: string;
@@ -21,6 +22,7 @@ export default function AppBar() {
   const { getToken } = useAuth();
   const [user, setUser] = useState<User>();
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const getUser = async () => {
       const token = await getToken();
@@ -40,9 +42,9 @@ export default function AppBar() {
   }, []);
 
   const handleBuyClick = () => {
-    if(user){
-      const url = `${STRIPE_PAYMENT_LINK}?prefilled_email=` + user.email
-      window.open(url, '_blank')
+    if (user) {
+      const url = `${STRIPE_PAYMENT_LINK}?prefilled_email=` + user.email;
+      window.open(url, "_blank");
     }
   };
 

@@ -9,6 +9,7 @@ import { BACKEND_URL } from "@/config"
 import axios from "axios"
 import { useAuth } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export default function Generate() {
 
@@ -18,18 +19,15 @@ export default function Generate() {
 
 
     const generateImage = async () => {
-        console.log(prompt)
-        console.log(selectedModel)
-        console.log("HEYYYL")
         const token = await getToken();
-        
-        console.log(token);
-
+    
         const res = await axios.post(`${BACKEND_URL}/ai/generate`, {prompt, modelId: selectedModel}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
+
+        toast("Photo will be generated shortly. Please check your Gallery")
         
     }
 
