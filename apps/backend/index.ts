@@ -10,7 +10,7 @@ import { FalAiModel } from "./models/FalModel";
 import cors from "cors";
 import { authMiddleware } from "./middleware";
 import paymentRoutes from "./routes/payment.routes";
-
+import webhookRoutes from "./routes/webhook.routes"
 const app = express();
 
 const falAIClient = new FalAiModel();
@@ -18,6 +18,7 @@ const falAIClient = new FalAiModel();
 app.use(cors());
 
 app.use("/payment", paymentRoutes);
+app.use("/webhook", webhookRoutes);
 
 app.use(express.json());
 
