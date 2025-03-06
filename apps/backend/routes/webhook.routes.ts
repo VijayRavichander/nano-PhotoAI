@@ -6,7 +6,7 @@ import { Webhook } from "svix";
 const router = express.Router();
 
 
-router.post("/clerk", express.raw({type: 'application/json'}), async (req, res) => {
+router.post("/clerk", async (req, res) => {
 
     const SIGNING_SECRET = process.env.CLERK_SIGNING_SECRET;
 

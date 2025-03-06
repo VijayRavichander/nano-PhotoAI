@@ -18,10 +18,10 @@ const falAIClient = new FalAiModel();
 app.use(cors());
 
 app.use("/payment", paymentRoutes);
-app.use("/webhook", webhookRoutes);
 
 app.use(express.json());
 
+app.use("/webhook", webhookRoutes);
 app.get("/health", (req, res) => {
   res.status(200).json({
     message: "All Good",
