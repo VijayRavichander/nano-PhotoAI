@@ -12,11 +12,11 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@clerk/nextjs";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Gallery from "@/components/Gallery";
-// const Gallery = dynamic(() => import('../../components/Gallery'), { ssr: false })
+
+import { Suspense } from "react";
 
 export default function Page() {
 
@@ -148,7 +148,9 @@ export default function Page() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Gallery />
+              <Suspense fallback = {<div>Loading..</div>}>
+                <Gallery />
+              </Suspense>
             </CardContent>
           </Card>
         </TabsContent>
