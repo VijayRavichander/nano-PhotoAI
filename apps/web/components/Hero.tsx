@@ -58,6 +58,9 @@ export const Hero = () => {
       <div className="">
         <EmblaCarousel />
       </div>
+      <div>
+        
+      </div>
     </div>
   );
 };

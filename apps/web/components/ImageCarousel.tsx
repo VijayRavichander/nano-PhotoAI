@@ -22,32 +22,32 @@ export function EmblaCarousel() {
       imgLink:
         "https://v3.fal.media/files/koala/84wru95vKQECDBViya1a6_f7fbcde7dd294c7aa8bd2c91cb363ef1.jpg",
       title: "Stylish",
-      description: "Cool and Modern Potraits",
+      description: "Cool and Trendy Potraits",
     },
     {
       imgLink:
         "https://v3.fal.media/files/kangaroo/ShEq7FJwFecw0bqZby5gW_2499042a23c140a1933d7e6bd51080ba.jpg",
-      title: "Festive",
-      description: "Fun Potratis",
+      title: "Aesthetic",
+      description: "Natural and Lively Shots",
     },
     {
       imgLink:
         "https://v3.fal.media/files/panda/-c8LZoXWMIGjFH8HQhlFc_569d2b76a2b046ee988dd863ba6559dd.jpg",
-      title: "Artistic",
-      description: "Classic Potraits",
+      title: "Timeless",
+      description: "Classic and Artistic Frames",
     },
 
     {
       imgLink:
         "https://v3.fal.media/files/panda/VZcihmE89CdXT9Xz-o7bm_7df6c67ae1114eac8701dc334c0f62b1.jpg",
-      title: "Professional",
-      description: "Corporate Potraits",
+      title: "Sleek",
+      description: "Sharp and Professional Looks",
     },
     {
       imgLink:
         "https://v3.fal.media/files/rabbit/c2S25KfAyda_drAdxZZTV_412ac793dbb74a06adbad3288ee03b92.jpg",
-      title: "Luxury",
-      description: "High Class Potraits",
+      title: "Opulent",
+      description: "Luxurious and High-end Style",
     },
   ];
 
@@ -67,10 +67,10 @@ export function EmblaCarousel() {
 
                 {/* Hover Overlay */}
                 <div className="absolute bottom-2 left-0 w-full bg-black/30 text-white py-2 px-4 rounded-lg opacity-0 translate-y-5 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-                  <h3 className="text-lg font-semibold text-purple-200">
+                  <h3 className="text-lg font-bold text-blue-200">
                     {image.title}
                   </h3>
-                  <p className="text-sm">{image.description}</p>
+                  <p className="text-sm font-semibold">{image.description}</p>
                 </div>
               </div>
             </div>
