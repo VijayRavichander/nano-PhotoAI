@@ -2,6 +2,8 @@ import { SignIn, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { ArrowRight, Sparkles, Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import {EmblaCarousel} from './ImageCarousel'
+
 
 export const Hero = () => {
   const router = useRouter();
@@ -52,6 +54,9 @@ export const Hero = () => {
             <ArrowRight className="ml-2" />
           </Button>
         </SignedIn>
+      </div>
+      <div className="">
+        <EmblaCarousel />
       </div>
     </div>
   );

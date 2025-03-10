@@ -24,8 +24,7 @@ router.post(
             process.env.STRIPE_WEBHOOK_SECRET!
         );
         
-        // // PRICE_ID
-        // console.log("Webhook Event Received:", event.type)
+
         
         if(event.type == "checkout.session.completed"){
             const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {
@@ -43,8 +42,6 @@ router.post(
                 return
             }
             
-            console.log("Customer Email")
-            console.log(customer_email)
 
             const user = await prismaClient.user.updateMany({
                 where: {
@@ -56,8 +53,7 @@ router.post(
                     }
                 }
             })
-            console.log(user)
-            console.log("Payment Updated")
+
         }
         
         res.json({ received: true });
