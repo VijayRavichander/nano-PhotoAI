@@ -31,7 +31,6 @@ export const Gallery = () => {
   const [token, setToken] = useState<string>("");
   const [search, setSearch] = useState<string>(`${searchparams || ""}`);
 
-  
   useEffect(() => {
     const fetchImages = async () => {
       try {
@@ -77,14 +76,24 @@ export const Gallery = () => {
       <div className="my-4">
         <SearchPhoto search={search} setSearch={setSearch} />
       </div>
-      <Suspense>
-        <InfinitePhotosList
-          initalData={images}
-          limit={4}
-          token={token}
-          search={search}
-        />
-      </Suspense>
+      {images && images.length ? (
+        <div>
+          <Suspense>
+            <InfinitePhotosList
+              initalData={images}
+              limit={4}
+              token={token}
+              search={search}
+            />
+          </Suspense>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center">
+          <div className="my-10 text-center text-gray-500 italic">
+          Ready when you are! let’s create something amazing! Head to the training section to train your model.
+          </div>
+        </div>
+      )}
     </div>
   );
 };

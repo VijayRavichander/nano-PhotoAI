@@ -10,6 +10,7 @@ import { useAuth } from "@clerk/nextjs"
 import { BACKEND_URL } from "@/config"
 import axios from "axios"
 import { toast } from "sonner"
+
 export default function Pack() {
 
     const [selectedModel, setSelectedModel] = useState<string>("");
@@ -41,11 +42,12 @@ export default function Pack() {
         </div>
         <div className="my-5">
             <Button onClick={generateImageFromPack}
-            disabled = {!selectedPack && !selectedModel}
+            disabled={!selectedPack || !selectedModel}
             className="px-8">
-            <Sparkles className="mr-2 h-4 w-4" />
+            <Sparkles className="mr-2 h-4 w-4"/>
             Generate
             </Button>
         </div>
+        <div>{selectedModel}</div>
     </div>
 }

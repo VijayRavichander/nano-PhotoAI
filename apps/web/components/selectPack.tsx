@@ -50,7 +50,7 @@ export const SelectPack = ({
 
   return (
     <div>
-      <div>Pick a Pack</div>
+      <div className="my-8">Choose a Style Pack</div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {packs.map((pack) => (

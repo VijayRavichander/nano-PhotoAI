@@ -52,9 +52,9 @@ export const SelectModel = ({
 
   return (
     <div>
-      <div>Pick a Model</div>
+      <div className="">Choose Your Trained Model</div>
       <div>
-        {models && !modelLoading ? (
+        {models && models.length > 0 && !modelLoading ? (
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {models
@@ -111,7 +111,10 @@ export const SelectModel = ({
             )}
           </div>
         ) : (
-          <div>No Trained Models</div>
+          <div className="my-10 text-center text-gray-500 italic">
+            Nothing to see here... yet! Your trained models will show up right
+            in this spot.
+          </div>
         )}
       </div>
     </div>
