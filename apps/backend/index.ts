@@ -162,7 +162,7 @@ app.post("/pack/generate", authMiddleware, async (req, res) => {
     },
   });
 
-  if (!model || !model.tensorPath) {
+  if (!model) {
     res.status(411).json({
       message: "Model not found",
     });
