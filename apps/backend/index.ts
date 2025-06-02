@@ -113,7 +113,7 @@ app.post("/ai/generate", authMiddleware, async (req, res) => {
     },
   });
 
-  if (!model || !model.tensorPath) {
+  if (!model) {
     res.json({
       message: "Model Not Found",
     });
@@ -124,6 +124,8 @@ app.post("/ai/generate", authMiddleware, async (req, res) => {
     parsedData.data.prompt,
     model.tensorPath
   );
+  
+  console.log(request_id)
 
   const image_data = await prismaClient.outputImages.create({
     data: {
@@ -134,6 +136,7 @@ app.post("/ai/generate", authMiddleware, async (req, res) => {
       falAiRequestId: request_id,
     },
   });
+
 
   res.json({ imageId: image_data.id });
 });
