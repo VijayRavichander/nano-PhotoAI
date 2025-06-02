@@ -48,6 +48,5 @@ export default function Pack() {
             Generate
             </Button>
         </div>
-        <div>{selectedModel}</div>
     </div>
 }
